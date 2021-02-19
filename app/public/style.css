@@ -94,11 +94,15 @@ a {
   box-shadow: var(--ui-shadow);
 }
 
+.Center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .Message {
+  display: block;
   background: white;
   padding: 30px;
-  border-bottom: var(--ui-shadow-border);
-  box-shadow: var(--ui-shadow);
 }
 
 .Message > .Title {
@@ -127,7 +131,7 @@ a {
   height: 55px;
   width: 150px;
 
-  background: #fa4141;
+  background: #701b1b;
 
   border-radius: 30px;
 
@@ -142,7 +146,7 @@ a {
 }
 
 .WelcomeView {
-    background: url("food.jpg") left bottom;
+    background: #1d3053 left bottom;
     background-size: cover;
 }
 

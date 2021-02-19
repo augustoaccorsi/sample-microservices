@@ -2,12 +2,29 @@ extends layout
 
 block layout-content
   div.View.WelcomeView
-    h1.Banner WHATABYTE
-    div.Message
-      div.Title
-        h3 Making the Best
-        h1 Food For Devs
-      span.Details Access the WHATABYTE Team Portal
+    h1.Banner MICROSERVICES
+    div.Center
+      div.Message
+        a(href="/user")  
+          div.Title 
+            h3 Microservice One
+            h1 Microservice One
+          span.Details Microservice One
+      p
+      div.Message
+        a(href="/user")  
+          div.Title 
+            h3 Microservice Two
+            h1 Microservice Two
+          span.Details Microservice Two
+      p
+      div.Message
+        a(href="/user")  
+          div.Title 
+            h3 Microservice Three
+            h1 Microservice Three
+          span.Details Microservice Three
     div.NavButtons
-      a(href="/user")
-        div.NavButton Just dive in!
+      a(href="https://github.com/augustoaccorsi/microservices")
+        div.NavButton About
+        
