@@ -1,20 +1,17 @@
 {
-  "name": "microservices-sample",
+  "name": "microservices",
   "version": "1.0.0",
-  "description": "sample application for microservices study",
-  "main": "server.js",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "node server.js",
-    "test": "npm start dev"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon ./index.js",
+    "ui": "browser-sync start --config bs-config.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/augustoaccorsi/microservices.git"
   },
-  "keywords": [
-    "microservices",
-    "sample"
-  ],
   "author": "augusto accorsi",
   "license": "ISC",
   "bugs": {
@@ -23,7 +20,10 @@
   "homepage": "https://github.com/augustoaccorsi/microservices#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "request": "^2.88.2",
-    "socket.io": "^3.1.1"
+    "pug": "^3.0.0"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.26.14",
+    "nodemon": "^2.0.7"
   }
 }
