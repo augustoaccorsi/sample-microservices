@@ -1,15 +1,19 @@
 // index.js
-
 /**
  * Required External Modules
  */
 const express = require("express");
 const path = require("path");
+const https = require('https');
+//const conn = require("./Connection.js");
+
 /**
  * App Variables
  */
 const app = express();
 const port = process.env.PORT || "8000";
+let value = 0;
+
 /**
  *  App Configuration
  */
@@ -23,8 +27,16 @@ app.get("/", (req, res) => {
     res.render("index", { title: "Home" });
   });
 
-app.get("/user", (req, res) => {
-    res.render("user", { title: "Profile", userProfile: { nickname: "Auth0" } });
+app.get("/one", (req, res) => {
+
+  import axios from 'axios'
+  let conn;
+
+  axios.get(url).then(resp => {
+    conn = resp.data;
+});
+
+    res.render("one", { title: "Microservice One", value: conn });
   });
 /**
  * Server Activation

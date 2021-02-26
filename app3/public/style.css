@@ -145,13 +145,34 @@ a {
   box-shadow: var(--ui-shadow);
 }
 
+.NavButtonTwo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 55px;
+  width: 150px;
+
+  background: #1d3053 ;
+
+  border-radius: 30px;
+
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+
+  text-transform: capitalize;
+
+  border-bottom: var(--ui-shadow-border);
+  box-shadow: var(--ui-shadow);
+}
+
 .WelcomeView {
-    background: #1d3053 left bottom;
+    background: #becce6 left bottom;
     background-size: cover;
 }
 
-.UserView {
-    background: url("https://cdn.auth0.com/blog/whatabyte-portal/patio.jpeg") left
-      bottom;
+.OneView {    
+    background: #701b1b;
     background-size: cover;
 }

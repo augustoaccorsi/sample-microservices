@@ -1,0 +1,16 @@
+extends layout
+
+block layout-content
+  div.View.OneView
+    h1.Banner Microservice One!
+      a(href="/")
+    div.Center
+      div.Message
+        a(href="/one")  
+          div.Title 
+            h3 Value: #{value}
+            h1 Value: #{value}
+          span.Details Value: #{value}
+    div.NavButtons
+      a(href="/")
+        div.NavButtonTwo Return
