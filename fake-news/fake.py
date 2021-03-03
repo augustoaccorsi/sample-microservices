@@ -1,49 +1,72 @@
-import itertools
+#https://www.kaggle.com/asurajsubramanian/fake-news-classification-easiest-99-accur-b21d78
+
+from keras.models import Sequential
+from keras import layers
+
+import re
 import pandas as pd
-import numpy as np
-from sklearn.linear_model import PassiveAggressiveClassifier
+from nltk.corpus import stopwords
 from sklearn.model_selection import train_test_split
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics import accuracy_score
-from sklearn.metrics import confusion_matrix
+from sklearn.feature_extraction.text import CountVectorizer
+from nltk.stem.porter import PorterStemmer
+ps = PorterStemmer()
 
-# Import dataset
-df=pd.read_csv('./data_set/train.csv')
-
-# Get the shape
-df.shape
-
-# Get the head
+df = pd.read_csv('./data_set/train.csv')
+test = pd.read_csv('./data_set/test.csv')
 df.head()
 
-# Change the labels
-df.loc[(df['label'] == 1) , ['label']] = 'FAKE'
-df.loc[(df['label'] == 0) , ['label']] = 'REAL'
+df = df.fillna('')
+test = test.fillna('')
+df['total'] = df['author']+' '+df['title']
+test['total']=test['author']+' '+test['title']
 
-# Isolate the labels
-labels = df.label
-labels.head()
+X = df.drop('label',axis=1)
+y = df['label']
+print(X.shape)
+print(y.shape)
 
-#Split the dataset
-x_train,x_test,y_train,y_test=train_test_split(df['text'].values.astype('str'), labels, test_size=0.2, random_state=7)
+def stemmer(input_):
+    review = re.sub('[^a-zA-Z]',' ',input_)
+    review = review.lower()
+    review = review.split()
+    review = [ps.stem(word) for word in review if not word in stopwords.words('english')]
+    review = ' '.join(review)
+    return review
 
-#Initialize a TfidfVectorizer
-tfidf_vectorizer=TfidfVectorizer(stop_words='english', max_df=0.7)
+df['total'] = df['total'].apply(stemmer)
 
-# Fit & transform train set, transform test set
-tfidf_train=tfidf_vectorizer.fit_transform(x_train) 
-tfidf_test=tfidf_vectorizer.transform(x_test)
+sentences = df['total'].values
+labels = df['label'].values
+sentences_train, sentences_test, y_train, y_test = train_test_split(sentences, labels, test_size=0.25, random_state=1000)
 
+vectorizer = CountVectorizer()
+vectorizer.fit(sentences_train)
 
-# Initialize the PassiveAggressiveClassifier and fit training sets
-pa_classifier=PassiveAggressiveClassifier(max_iter=50)
-pa_classifier.fit(tfidf_train,y_train)
+X_train = vectorizer.transform(sentences_train)
+X_test  = vectorizer.transform(sentences_test)
 
+# len(vectorizer.vocabulary_) = 15031
 
-# Predict and calculate accuracy
-y_pred=pa_classifier.predict(tfidf_test)
-score=accuracy_score(y_test,y_pred)
-print(f'Accuracy: {round(score*100,2)}%')
+input_dim = X_train.shape[1]  # Number of features
 
-# Build confusion matrix
-confusion_matrix(y_test,y_pred, labels=['FAKE','REAL'])
+model = Sequential()
+model.add(layers.Dense(10, input_dim=input_dim, activation='relu'))
+model.add(layers.Dense(1, activation='sigmoid'))
+
+model.compile(loss='binary_crossentropy', 
+              optimizer='adam', 
+              metrics=['accuracy'])
+model.summary()
+
+history = model.fit(X_train, y_train,
+                    epochs=6,
+                    verbose=True,
+                    validation_data=(X_test, y_test),
+                    batch_size=10)
+                
+loss, accuracy = model.evaluate(X_train, y_train, verbose=False)
+print("Training Accuracy: {:.4f}".format(accuracy))
+loss, accuracy = model.evaluate(X_test, y_test, verbose=False)
+print("Testing Accuracy:  {:.4f}".format(accuracy))
+
+model.save('.')
